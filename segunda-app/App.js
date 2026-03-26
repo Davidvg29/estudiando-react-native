@@ -1,14 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { Pressable, TouchableHighlight, Image, Button, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+
+import image from "./assets/favicon.png"
+
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Aquí luego puedes conectar con tu backend
-    console.log('Intentando iniciar sesión con:', email, password);
+  const handleNoticias = () => {
+    
   };
 
   return (
@@ -17,44 +19,10 @@ export default function App() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Iniciar sesión</Text>
-          <Text style={styles.description}>Ingresa tu correo y contraseña para acceder a tu cuenta.</Text>
-        </View>
-
-        <View style={styles.form}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="m@ejemplo.com"
-              placeholderTextColor="#9ca3af"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Contraseña</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="••••••••"
-              placeholderTextColor="#9ca3af"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry // Esto oculta el texto con puntitos
-            />
-          </View>
-
-          <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.8}>
-            <Text style={styles.buttonText}>Iniciar sesión</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <StatusBar style="auto" />
+      <Button color="ffff" title="Ver noticias" onPress={()=>alert("Ver noticias")}/>
+      
+      
+      <StatusBar style="light" />
     </KeyboardAvoidingView>
   );
 }
