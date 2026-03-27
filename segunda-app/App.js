@@ -1,16 +1,24 @@
+import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Pressable, TouchableHighlight, Image, Button, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-
-import image from "./assets/favicon.png"
-
+import { Pressable, TouchableHighlight, Image, Button, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, FlatList } from 'react-native';
 
 export default function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [noticias, setNoticias] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleNoticias = () => {
-    
+  const handleNoticias = async() => {
+    try {
+      setLoading(true)
+      const {data} = await axios.get('https://aguasdeltucuman.com.ar/api/noticias')
+      if(data.status){
+        setNoticias(data.informacion)
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false)
+    }
   };
 
   return (
@@ -19,9 +27,43 @@ export default function App() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <Button color="ffff" title="Ver noticias" onPress={()=>alert("Ver noticias")}/>
+      <TouchableHighlight style={styles.button}  onPress={()=>handleNoticias()}>
+        <Text style={styles.buttonText}>Ver noticias</Text>
+      </TouchableHighlight>
       
+    <FlatList
+      data={noticias}
+      keyExtractor={n=>n.id_noticia}
+      renderItem={({item})=>(
+         <View style={styles.card}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.description}>{item.description} </Text>
+            <Image style={{
+              width: 250, 
+              height: 150,
+              resizeMode: 'contain'
+              }}
+              source={{uri:item.image}}/>
+          </View>
+      )}
+    />
+
+      {/* <ScrollView>
+        {noticias.map((n)=>(
+          <View key={n.id_noticia} style={styles.card}>
+            <Text style={styles.title}>{n.title}</Text>
+            <Text style={styles.description}>{n.description} </Text>
+            <Image style={{
+              width: 250, 
+              height: 150,
+              resizeMode: 'contain'
+              }}
+              source={{uri:n.image}}/>
+          </View>
+        ))}
+      </ScrollView> */}
       
+      {loading?<ActivityIndicator/>:false}
       <StatusBar style="light" />
     </KeyboardAvoidingView>
   );
@@ -36,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   card: {
-    width: '100%',
+    marginBottom: 10,
     maxWidth: 400,
     backgroundColor: '#ffffff',
     padding: 24,
@@ -62,7 +104,9 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
+    height: 300,
     color: '#64748b', // Slate 500
+    marginBottom: 20
   },
   form: {
     gap: 16, // Espaciado entre elementos del formulario
@@ -87,11 +131,13 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 48,
-    backgroundColor: '#0f172a', // Fondo negro/oscuro de shadcn
+    backgroundColor: '#6b8ddf', // Fondo negro/oscuro de shadcn
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 8,
+    marginTop : 8,
+    marginBottom: 8,
+    padding: 10
   },
   buttonText: {
     color: '#ffffff',
