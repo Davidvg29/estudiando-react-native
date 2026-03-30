@@ -21,14 +21,22 @@ export default function App() {
     }
   };
 
+  const eliminarNoticias = () => {
+    setNoticias([]);
+  }
+
   return (
     // KeyboardAvoidingView evita que el teclado de Android/iOS tape los inputs
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <TouchableHighlight style={styles.button}  onPress={()=>handleNoticias()}>
-        <Text style={styles.buttonText}>Ver noticias</Text>
+       <TouchableHighlight  className="bg-red-500" onPress={()=>handleNoticias()}>
+        <Text style={styles.buttonText} >Ver noticias</Text>
+      </TouchableHighlight>
+
+      <TouchableHighlight style={styles.button}  onPress={()=>eliminarNoticias()}>
+        <Text style={styles.buttonText}>Eliminar noticias</Text>
       </TouchableHighlight>
       
     <FlatList
