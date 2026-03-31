@@ -2,78 +2,13 @@ import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Pressable, TouchableHighlight, Image, Button, StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, FlatList } from 'react-native';
+import Main from './components/Main';
 
 export default function App() {
-  const [noticias, setNoticias] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const handleNoticias = async() => {
-    try {
-      setLoading(true)
-      const {data} = await axios.get('https://aguasdeltucuman.com.ar/api/noticias')
-      if(data.status){
-        setNoticias(data.informacion)
-        setLoading(false)
-      }
-    } catch (error) {
-      console.log(error);
-      setLoading(false)
-    }
-  };
-
-  const eliminarNoticias = () => {
-    setNoticias([]);
-  }
+  
 
   return (
-    // KeyboardAvoidingView evita que el teclado de Android/iOS tape los inputs
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-    >
-       <TouchableHighlight  className="bg-red-500" onPress={()=>handleNoticias()}>
-        <Text style={styles.buttonText} >Ver noticias</Text>
-      </TouchableHighlight>
-
-      <TouchableHighlight style={styles.button}  onPress={()=>eliminarNoticias()}>
-        <Text style={styles.buttonText}>Eliminar noticias</Text>
-      </TouchableHighlight>
-      
-    <FlatList
-      data={noticias}
-      keyExtractor={n=>n.id_noticia}
-      renderItem={({item})=>(
-         <View style={styles.card}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.description}>{item.description} </Text>
-            <Image style={{
-              width: 250, 
-              height: 150,
-              resizeMode: 'contain'
-              }}
-              source={{uri:item.image}}/>
-          </View>
-      )}
-    />
-
-      {/* <ScrollView>
-        {noticias.map((n)=>(
-          <View key={n.id_noticia} style={styles.card}>
-            <Text style={styles.title}>{n.title}</Text>
-            <Text style={styles.description}>{n.description} </Text>
-            <Image style={{
-              width: 250, 
-              height: 150,
-              resizeMode: 'contain'
-              }}
-              source={{uri:n.image}}/>
-          </View>
-        ))}
-      </ScrollView> */}
-      
-      {loading?<ActivityIndicator/>:false}
-      <StatusBar style="light" />
-    </KeyboardAvoidingView>
+    <Text>asd</Text>
   );
 }
 
